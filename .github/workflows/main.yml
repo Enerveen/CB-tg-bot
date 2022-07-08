@@ -68,10 +68,10 @@ jobs:
             [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
             npm install --global yarn
             yarn install
-            export APP_PORT=${{ secrets.APP_PORT }}
             export BOT_API_TOKEN=${{ secrets.BOT_API_TOKEN }}
+            export MONGO_HOST=${{ secrets.MONGO_HOST }}
             export MONGO_USERNAME=${{ secrets.MONGO_USERNAME }}
             export MONGO_PASSWORD=${{ secrets.MONGO_PASSWORD }}
-            export MONGO_HOST=${{ secrets.MONGO_HOST }}
+            export APP_PORT=${{ secrets.APP_PORT }}
             yarn start > app.out.log 2> app.err.log < /dev/null &
 
