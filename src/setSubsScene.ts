@@ -22,7 +22,7 @@ const setSubsWizard = new Scenes.WizardScene(
         const { subscriptions } = ctx.scene.state
         const subsList = subscriptions.reduce(
             (acc: string, value: string) => acc + `[${value.trim()}](https://vk.com/${value.trim()})\n`,
-            '*Your new subscriяptions are:* \n\n'
+            '*Your new subscriptions are:* \n\n'
         )
         await ctx.replyWithMarkdown(subsList + '\n*Is everything right?*', {disable_web_page_preview: true})
         return ctx.wizard.next()
@@ -44,6 +44,10 @@ const setSubsWizard = new Scenes.WizardScene(
         }
         // @ts-ignore
         if (ctx.message.text === 'No') {
+            return ctx.wizard.back()
+        }
+        // @ts-ignore
+        if (ctx.message.text === 'Exit') {
             return ctx.wizard.back()
         }
     }

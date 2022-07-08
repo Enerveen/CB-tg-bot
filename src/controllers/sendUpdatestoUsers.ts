@@ -5,6 +5,7 @@ import {Error} from "mongoose";
 import {api, getCurrentSecondsTimestamp} from "../utils";
 import IUser from "../mongo/interface";
 import log from "yuve-shared/build/logger/logger";
+import runWithErrorHandler from "yuve-shared/build/runWithErrorHandler/runWithErrorHandler";
 
 const getAllActiveUsers = (): Promise<IUser[]> =>
     User.find({paused: false, banned: false}, 'tgId subscriptions lastRequestTimestamp')
@@ -18,18 +19,16 @@ const getAllActiveUsers = (): Promise<IUser[]> =>
 const sendUpdateToUser =
     async ({tgId, subscriptions, lastRequestTimestamp}: VkReqUser, bot: Telegraf<Scenes.WizardContext>): Promise<void> => {
         const {data: updates} =
-            await api.get(`/posts`,
-                {domains: subscriptions.join(','), timestamp: lastRequestTimestamp})
+            await runWithErrorHandler(() => api.get(`/posts`,
+                {domains: subscriptions.join(','), timestamp: lastRequestTimestamp})) || { data: [] }
         if (updates) {
             for (const {text, content} of updates) {
                 const mediaContent = content.filter(({type}: {type: string}) => type === 'photo')
-                try {
+                await runWithErrorHandler(async () => {
                     text && await bot.telegram.sendMessage(tgId, text)
                     // @ts-ignore
                     mediaContent.length && await bot.telegram.sendMediaGroup(tgId, mediaContent)
-                } catch (error) {
-                    log.error(error as string, mediaContent)
-                }
+                })
             }
         }
         User.findOneAndUpdate({tgId}, {lastRequestTimestamp: getCurrentSecondsTimestamp()},

@@ -48,5 +48,6 @@ mongoose.connect(config.MONGO_URL, config.MONGO_OPTIONS)
 
 bot.launch()
     .then(() => log.info('Bot launched successfully'))
+    .then(async () => await sendUpdatesToUsers(bot))
     .then(() => scheduler.addSimpleIntervalJob(sendUpdatesJob))
     .catch((error) => log.error(error.message, error))

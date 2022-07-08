@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "src/bot.ts",
   "scripts": {
+    "start": "node build/bot.js",
     "local": "nodemon src/bot.ts",
     "build": "rm -rf build/ && tsc"
   },
