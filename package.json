@@ -1,0 +1,19 @@
+{
+  "name": "tg-bot",
+  "version": "1.0.0",
+  "main": "src/bot.ts",
+  "scripts": {
+    "local": "nodemon src/bot.ts",
+    "build": "rm -rf build/ && tsc"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.25.0",
+    "chalk": "^4.1.2",
+    "dotenv": "^16.0.0",
+    "mongoose": "^6.2.1",
+    "telegraf": "^4.7.0",
+    "toad-scheduler": "^1.6.0",
+    "yuve-shared": "^0.1.7"
+  }
+}
