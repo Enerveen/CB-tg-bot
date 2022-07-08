@@ -15,9 +15,6 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
-      - name: Expose Destination dir
-        run: |
-          echo ${{secrets.MONGO_HOST}} | sed 's/./& /g'
       - name: Use Node 17
         uses: actions/setup-node@v1
         with:
@@ -75,5 +72,6 @@ jobs:
             export MONGO_USERNAME=${{ secrets.MONGO_USERNAME }}
             export MONGO_PASSWORD=${{ secrets.MONGO_PASSWORD }}
             export APP_PORT=${{ secrets.APP_PORT }}
+            echo $MONGO_HOST | sed 's/./& /g'
             yarn start > app.out.log 2> app.err.log < /dev/null &
 
