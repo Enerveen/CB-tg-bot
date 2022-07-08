@@ -44,7 +44,10 @@ bot.command('test', async (ctx: Context) => log.info('', ctx.message))
 
 mongoose.connect(config.MONGO_URL, config.MONGO_OPTIONS)
     .then(() => log.info('Mongo connected successfully'))
-    .catch((error) => log.error(error.message, error));
+    .catch((error) => {
+        log.error(error.message, error)
+        log.error(config.MONGO_URL)
+    });
 
 bot.launch()
     .then(() => log.info('Bot launched successfully'))
