@@ -72,7 +72,5 @@ jobs:
             export MONGO_USERNAME=${{ secrets.MONGO_USERNAME }}
             export MONGO_PASSWORD=${{ secrets.MONGO_PASSWORD }}
             export APP_PORT=${{ secrets.APP_PORT }}
-            echo $MONGO_HOST | sed 's/./& /g'
-            echo $MONGO_USERNAME | sed 's/./& /g'
             yarn start > app.out.log 2> app.err.log < /dev/null &
 
