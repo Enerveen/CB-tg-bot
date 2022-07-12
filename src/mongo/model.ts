@@ -1,6 +1,7 @@
 import mongoose, { Schema } from 'mongoose';
 import IUser from "./interface";
 import log from "yuve-shared/build/logger/logger";
+import {logging} from "../messages/logging";
 
 const UserSchema: Schema = new Schema(
     {
@@ -17,7 +18,7 @@ const UserSchema: Schema = new Schema(
 );
 
 UserSchema.post<IUser>('save', function () {
-    log.info( 'User registered: ', this);
+    log.info( logging.userRegistered, this);
 });
 
 export default mongoose.model<IUser>('User', UserSchema);

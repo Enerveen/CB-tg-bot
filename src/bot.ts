@@ -7,6 +7,7 @@ import sendUpdatesToUsers from "./controllers/sendUpdatestoUsers";
 import createUser from "./controllers/createUser";
 import getUserSubscriptions from "./controllers/getUserSubscriptions";
 import log from "yuve-shared/build/logger/logger";
+import {info} from "./messages/logging";
 
 const bot = new Telegraf<Scenes.WizardContext>(config.BOT_API_TOKEN)
 const scheduler = new ToadScheduler();
@@ -43,11 +44,11 @@ bot.command('setSubs', async (ctx) => ctx.scene.enter('setSubs'));
 bot.command('test', async (ctx: Context) => log.info('', ctx.message))
 
 mongoose.connect(config.MONGO_URL, config.MONGO_OPTIONS)
-    .then(() => log.info('Mongo connected successfully'))
+    .then(() => log.info(info.mongoConnected))
     .catch((error) => log.error(error.message, error));
 
 bot.launch()
-    .then(() => log.info('Bot launched successfully'))
+    .then(() => log.info(info.botStarted))
     .then(async () => await sendUpdatesToUsers(bot))
     .then(() => scheduler.addSimpleIntervalJob(sendUpdatesJob))
     .catch((error) => log.error(error.message, error))

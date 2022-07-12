@@ -3,6 +3,8 @@ import {getCurrentSecondsTimestamp} from "../utils";
 import User from "../mongo/model";
 import mongoose from "mongoose";
 import log from "yuve-shared/build/logger/logger";
+import {getMessage, messages} from '../messages/messages'
+import {logging} from "../messages/logging";
 
 const createUser = (ctx: Context) => {
 
@@ -19,13 +21,14 @@ const createUser = (ctx: Context) => {
 
     return user
         .save()
-        .then(() => ctx.reply(`Hey there, ${ctx.from?.first_name}`))
+        .then(() => ctx.reply(getMessage.welcome(ctx.from?.first_name as string)))
         .catch(async (error): Promise<void> => {
             if (error.code === 11000) {
-                await ctx.reply('You have been already registered')
+                await ctx.reply(messages.alreadyRegistered)
             }
-            log.error('Failed to create user:', error)
+            log.error(logging.userCreate, error)
         });
+
 };
 
 export default createUser

@@ -6,12 +6,13 @@ import {api, getCurrentSecondsTimestamp} from "../utils";
 import IUser from "../mongo/interface";
 import log from "yuve-shared/build/logger/logger";
 import runWithErrorHandler from "yuve-shared/build/runWithErrorHandler/runWithErrorHandler";
+import {logging, info} from "../messages/logging";
 
 const getAllActiveUsers = (): Promise<IUser[]> =>
     User.find({paused: false, banned: false}, 'tgId subscriptions lastRequestTimestamp')
         .exec()
         .catch((error) => {
-                log.error('Failed to get users:', error)
+                log.error(logging.userFind, error)
                 return []
             }
         )
@@ -34,9 +35,9 @@ const sendUpdateToUser =
         User.findOneAndUpdate({tgId}, {lastRequestTimestamp: getCurrentSecondsTimestamp()},
             (err:Error) => {
                 if (err) {
-                    log.error(err.message)
+                    log.error(err.message, err)
                 } else {
-                    log.info(`Timestamp successfully updated for ${tgId}`)
+                    log.info(info.getTimestampUpdate(tgId))
                 }
             })
     }
