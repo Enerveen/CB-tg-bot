@@ -43,7 +43,7 @@ const setSubsWizard = new Scenes.WizardScene(
         }
         // @ts-ignore
         if (ctx.message.text === messages.cancel) {
-            return ctx.wizard.back()
+            return ctx.scene.leave()
         }
     }
 )

@@ -3,3 +3,8 @@ export interface VkReqUser {
     subscriptions: string[]
     lastRequestTimestamp: string
 }
+
+export interface TopLevelUnknownMessageReply {
+    message?: string,
+    sticker?: string
+}

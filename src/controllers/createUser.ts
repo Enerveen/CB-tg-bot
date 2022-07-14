@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import log from "yuve-shared/build/logger/logger";
 import {getMessage, messages} from '../messages/messages'
 import {logging} from "../messages/logging";
+import mainKeyboard from "../keyboards/main";
 
 const createUser = (ctx: Context) => {
 
@@ -21,10 +22,12 @@ const createUser = (ctx: Context) => {
 
     return user
         .save()
-        .then(() => ctx.reply(getMessage.welcome(ctx.from?.first_name as string)))
+        .then(async () => {
+            await ctx.reply(getMessage.welcome(ctx.from?.first_name as string), mainKeyboard.reply())
+        })
         .catch(async (error): Promise<void> => {
             if (error.code === 11000) {
-                await ctx.reply(messages.alreadyRegistered)
+                await ctx.reply(messages.alreadyRegistered, mainKeyboard.reply())
             }
             log.error(logging.userCreate, error)
         });
