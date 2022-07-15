@@ -13,7 +13,7 @@ const getUserSubscriptions = async (bot: Telegraf<Scenes.WizardContext>, ctx: Co
     if (user) {
         const {subscriptions} = user || {subscriptions: []}
         const subsList = subscriptions.reduce(getMessage.subsList, messages.subsListFirstLine)
-        await ctx.replyWithMarkdown(subsList, {disable_web_page_preview: true})
+        await ctx.replyWithHTML(subsList, {disable_web_page_preview: true})
     }
 }
 

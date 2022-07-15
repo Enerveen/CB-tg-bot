@@ -13,5 +13,4 @@ const mainKeyboard = Keyboard.make(
         ]
     ]
 )
-
-export default mainKeyboard
+export default mainKeyboard;

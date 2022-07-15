@@ -4,12 +4,17 @@ import {TopLevelUnknownMessageReply} from "../types";
 export const messages = {
     alreadyRegistered: 'You\'ve been already registered, mate. Use the menu below to set up your subscriptions or just wait for the updates',
     defaultErrorReply: 'Oops... Something went wrong. Try again, it helps sometimes...',
-    subsListFirstLine: '*You are subscribed to the following pages:* \n\n',
-    setSubsRequest: `Provide the list of the pages ids that you want to subscribe using *exactly* the following format:
-    \`subscription1, subscription2, subscription3\`
-    `,
-    subsVerifyLastLine: '\n*Is everything right?*',
-    subsSetUp: 'Congrats! Your have just set up your subscriptions, it\'s a great achievement though!',
+    setSubsSceneLeft: 'Subscriptions setup canceled, are you satisfied with what you\'ve done?',
+    setSubsSceneBack: 'One small step back for man, one giant leap back for mankind...',
+    subsListFirstLine: `You are subscribed to the following pages:
+    
+`,
+    setSubsRequest: `Provide the list of the pages ids that you want to subscribe using <b>exactly</b> the following format:
+<i>subscription1, subscription2, subscription3</i>`,
+    subsVerifyLastLine: `
+
+<b>Is everything right?</b>`,
+    subsSetUp: 'Congrats! Your have just set up your subscriptions, it\'s a great step on your way to happiness!',
     about: `Ah, you want to know me a bit closer?
 
 Well, my name is <b><i>Pontissey</i></b> and I was born on a sunny day in March 2022. Shortly afterwards, in June, I moved to Frankfurt and have been working around the clock ever since.
@@ -25,7 +30,7 @@ In cases you stopped receiving updates from one or more of your subscriptions fo
      
 If none of this helps, just message <a href="https://t.me/worstlosing">my chef</a> and let him resolve it for you.
 
-Also, my current version is <b>1.0.1</b>, but keep in mind that I'm constantly becoming smarter and better. Probably, one day I will even become smarter than you<span class="tg-spoiler">, which is definitely not a great achievement to be honest</span>
+Also, my current version is <b>1.0.1</b>, but keep in mind that I'm constantly improving becoming faster and smarter. Probably, one day I will even become smarter than you<span class="tg-spoiler">, which is definitely not a great achievement to be honest</span>
      `
 }
 
@@ -69,7 +74,8 @@ const topLevelUnknownMessageReplies:TopLevelUnknownMessageReply[]  = [
 ]
 
 export const getMessage = {
-    welcome: (name: string) => `Ah, greetings ${name}! Great name for a dog! You just have been successfully registered, go on and set your subscriptions to get your funny memes or whatever else you want`,
-    subsList: (acc: string, value: string) => acc + `[${value}](https://vk.com/${value})\n`,
+    welcome: (name: string) => `Ah, greetings ${name}! Great name for a dog, by the way! You just have been successfully registered, go on and set your subscriptions to get your funny memes or whatever else you need`,
+    subsList: (acc: string, value: string) => acc + `<a href='https://vk.com/${value.trim()}'>${value.trim()}</a>
+`,
     topLevelUnknownMessageReply: () => topLevelUnknownMessageReplies[Math.floor(Math.random() * topLevelUnknownMessageReplies.length)]
 }
