@@ -72,6 +72,6 @@ jobs:
             export MONGO_USERNAME=${{ secrets.MONGO_USERNAME }}
             export MONGO_PASSWORD=${{ secrets.MONGO_PASSWORD }}
             export APP_PORT=${{ secrets.APP_PORT }}
-            export SECRETS=${{ secrets.SECRETS }}
+            cat ../.secrets > .env
             yarn start > app.out.log 2> app.err.log < /dev/null &
 
