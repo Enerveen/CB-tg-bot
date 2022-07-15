@@ -23,6 +23,11 @@ const VK_HANDLER_HOST = process.env.APP_HOST || '127.0.0.1'
 const VK_HANDLER_PROTOCOL = process.env.VK_HANDLER_PROTOCOL || 'http'
 const SECRETS = process.env.SECRETS
 
+export const constants = {
+    masterLink: 'https://t.me/worstlosing',
+    version: '1.0.2'
+}
+
 const config = {
     APP_HOST,
     APP_PORT,
