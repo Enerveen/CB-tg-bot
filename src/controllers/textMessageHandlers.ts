@@ -22,10 +22,6 @@ export const handleTopLevelTextMessage = async (message: string, ctx: any, bot: 
         case mainKeyboardTexts.about:
             await ctx.replyWithHTML(messages.about, {disable_web_page_preview: true})
             break;
-        case 'secret':
-            const {message: secret} = getRandomElement(JSON.parse(config.SECRETS as string))
-            await bot.telegram.sendMessage(ctx.from.id, secret)
-            break;
         default:
             await sendReplyToUnknownMessage(ctx, 'text')
     }
