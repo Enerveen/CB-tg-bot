@@ -23,7 +23,7 @@ const createUser = (ctx: Context) => {
     return user
         .save()
         .then(async () => {
-            await ctx.reply(getMessage.welcome(ctx.from?.first_name as string), mainKeyboard.reply())
+            await ctx.replyWithHTML(getMessage.welcome(ctx.from?.first_name as string), mainKeyboard.reply())
         })
         .catch(async (error): Promise<void> => {
             if (error.code === 11000) {

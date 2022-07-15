@@ -2,10 +2,12 @@ import stickers from "./stickers";
 import {TopLevelUnknownMessageReply} from "../types";
 
 export const messages = {
-    alreadyRegistered: 'You\'ve been already registered, mate. Use the menu below to set up your subscriptions or just wait for the updates',
+    alreadyRegistered: 'Wait, we already know each other, mate. Use the menu below to set up your subscriptions or just wait for the updates',
     defaultErrorReply: 'Oops... Something went wrong. Try again, it helps sometimes...',
-    setSubsSceneLeft: 'Subscriptions setup canceled, are you satisfied with what you\'ve done?',
+    setSubsSceneLeft: 'Subscriptions setup canceled, hope you are satisfied with what you\'ve done',
     setSubsSceneBack: 'One small step back for man, one giant leap back for mankind...',
+    botUnpaused: 'Already missed your funny memes? Ok, now I will deliver them again',
+    botPaused: 'Ah, wanna take a time to chill? Ok, no updates for you anymore',
     subsListFirstLine: `You are subscribed to the following pages:
     
 `,
@@ -70,11 +72,14 @@ const topLevelUnknownMessageReplies:TopLevelUnknownMessageReply[]  = [
     },
     {
         message: 'I could reply your on this but why would I'
+    },
+    {
+        message: 'My son, my son, what have ye expressed...'
     }
 ]
 
 export const getMessage = {
-    welcome: (name: string) => `Ah, greetings ${name}! Great name for a dog, by the way! You just have been successfully registered, go on and set your subscriptions to get your funny memes or whatever else you need`,
+    welcome: (name: string) => `Ah, greetings ${name}! Great name for a dog, by the way! My name is <b><i>Pontissey</i></b>, I'm eager to know more about the meme pages you subscribed (not really), so go on and setup your subscriptions`,
     subsList: (acc: string, value: string) => acc + `<a href='https://vk.com/${value.trim()}'>${value.trim()}</a>
 `,
     topLevelUnknownMessageReply: () => topLevelUnknownMessageReplies[Math.floor(Math.random() * topLevelUnknownMessageReplies.length)]

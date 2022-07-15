@@ -3,6 +3,7 @@ import getUserSubscriptions from "./getUserSubscriptions";
 import {Context, Scenes, Telegraf} from "telegraf";
 import {getMessage, messages} from "../messages/messages";
 import mainKeyboard from "../keyboards/main";
+import pauseOrRestartBot from "./pauseOrRestartBot";
 
 export const handleTopLevelTextMessage = async (message: string, ctx: any, bot: Telegraf<Scenes.WizardContext>) => {
     switch (message) {
@@ -13,6 +14,8 @@ export const handleTopLevelTextMessage = async (message: string, ctx: any, bot: 
             ctx.scene.enter('setSubs')
             break;
         case mainKeyboardTexts.pauseRestart:
+            await pauseOrRestartBot(ctx)
+            break;
         case mainKeyboardTexts.about:
             await ctx.replyWithHTML(messages.about, {disable_web_page_preview: true})
             break;
