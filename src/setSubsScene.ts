@@ -10,7 +10,7 @@ import mainKeyboard from "./keyboards/main";
 const setSubsWizard = new Scenes.WizardScene(
     'setSubs',
     async (ctx) => {
-        await ctx.replyWithHTML(messages.setSubsRequest, cancelOnlyKeyboard.reply())
+        await ctx.replyWithHTML(messages.setSubsRequest, {disable_web_page_preview: true, ...cancelOnlyKeyboard.reply()})
         return ctx.wizard.next()
     },
     async (ctx) => {
