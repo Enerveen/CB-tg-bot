@@ -23,7 +23,7 @@ const sendUpdateToUser =
         const {data: updates} =
             await runWithErrorHandler(() => api.get(`/posts`,
                 {domains: subscriptions.join(','), timestamp: lastRequestTimestamp})) || { data: [] }
-        if (updates[0]) {
+        if (updates) {
             for (const {text, content} of updates) {
                 const mediaContent = content.filter(({type}: {type: string}) => type === 'photo')
                 await runWithErrorHandler(async () => {
