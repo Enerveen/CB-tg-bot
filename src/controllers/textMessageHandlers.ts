@@ -4,8 +4,6 @@ import {Context, Scenes, Telegraf} from "telegraf";
 import {getMessage, messages} from "../messages/messages";
 import mainKeyboard from "../keyboards/main";
 import pauseOrRestartBot from "./pauseOrRestartBot";
-import {getRandomElement} from "../utils";
-import config from "../config";
 import {messageType} from "../types";
 
 export const handleTopLevelTextMessage = async (message: string, ctx: any, bot: Telegraf<Scenes.WizardContext>) => {

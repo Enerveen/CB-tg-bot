@@ -12,8 +12,10 @@ export const messages = {
     botPaused: 'Ah, wanna take a time to chill? Ok, no updates for you anymore',
     subsListFirstLine: `You are subscribed to the following pages:
 `,
-    setSubsRequest: `Provide the list of the pages ids that you want to subscribe using <b>exactly</b> the following format:
-<i>subscription1, subscription2, subscription3</i>`,
+    setSubsRequest: `Well, now I will need the list of the pages ids that you want to subscribe using <b>exactly</b> the following format:
+<i>subscription1, subscription2, subscription3</i>
+<span class="tg-spoiler">Page id is that stuff after the vk address in the page url. For example, for the <i>https://vk.com/postmodernich</i> id will be <b><i>postmodernich</i></b></span>
+`,
     subsVerifyLastLine: `
 
 <b>Is everything right?</b>`,
