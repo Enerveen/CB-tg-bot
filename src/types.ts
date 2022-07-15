@@ -8,3 +8,5 @@ export interface TopLevelUnknownMessageReply {
     message?: string,
     sticker?: string
 }
+
+export type messageType = 'text' | 'voice' | 'music' | 'photo' | 'video' | 'other'

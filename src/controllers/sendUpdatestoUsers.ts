@@ -2,11 +2,12 @@ import {Scenes, Telegraf} from "telegraf";
 import User from "../mongo/model";
 import {VkReqUser} from "../types";
 import {Error} from "mongoose";
-import {api, getCurrentSecondsTimestamp} from "../utils";
+import {api, getCurrentSecondsTimestamp, getRandomElement} from "../utils";
 import IUser from "../mongo/interface";
 import log from "yuve-shared/build/logger/logger";
 import runWithErrorHandler from "yuve-shared/build/runWithErrorHandler/runWithErrorHandler";
 import {logging, info} from "../messages/logging";
+import config from "../config";
 
 const getAllActiveUsers = (): Promise<IUser[]> =>
     User.find({paused: false, banned: false}, 'tgId subscriptions lastRequestTimestamp')
@@ -22,7 +23,7 @@ const sendUpdateToUser =
         const {data: updates} =
             await runWithErrorHandler(() => api.get(`/posts`,
                 {domains: subscriptions.join(','), timestamp: lastRequestTimestamp})) || { data: [] }
-        if (updates) {
+        if (updates[0]) {
             for (const {text, content} of updates) {
                 const mediaContent = content.filter(({type}: {type: string}) => type === 'photo')
                 await runWithErrorHandler(async () => {
@@ -31,6 +32,9 @@ const sendUpdateToUser =
                     mediaContent.length && await bot.telegram.sendMediaGroup(tgId, mediaContent)
                 })
             }
+        } else if (Math.floor(Math.random() * 100000) === 0) {
+            const {message: secret} = getRandomElement(JSON.parse(config.SECRETS as string))
+            await bot.telegram.sendMessage(tgId, secret)
         }
         User.findOneAndUpdate({tgId}, {lastRequestTimestamp: getCurrentSecondsTimestamp()},
             (err:Error) => {

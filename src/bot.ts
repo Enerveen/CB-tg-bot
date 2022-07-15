@@ -7,7 +7,10 @@ import sendUpdatesToUsers from "./controllers/sendUpdatestoUsers";
 import createUser from "./controllers/createUser";
 import log from "yuve-shared/build/logger/logger";
 import {info} from "./messages/logging";
-import {handleTopLevelTextMessage} from "./controllers/textMessageHandlers";
+import {handleTopLevelTextMessage, sendReplyToUnknownMessage} from "./controllers/textMessageHandlers";
+import {getRandomElement} from "./utils";
+import stickers from "./messages/stickers";
+import {TopLevelUnknownMessageReply} from "./types";
 
 const bot = new Telegraf<Scenes.WizardContext>(config.BOT_API_TOKEN)
 const scheduler = new ToadScheduler();
@@ -36,7 +39,19 @@ bot.use(stage.middleware())
 
 bot.start((ctx) => createUser(ctx));
 // @ts-ignore
-bot.on('message', async (ctx: Context) => handleTopLevelTextMessage(ctx.message.text, ctx, bot))
+bot.on('text', async (ctx: Context) => await handleTopLevelTextMessage(ctx.message.text, ctx, bot))
+bot.on('sticker', async (ctx: Context) =>
+    await ctx.replyWithSticker(getRandomElement(Object.values(stickers))))
+bot.on('voice', async (ctx: Context) =>
+    await sendReplyToUnknownMessage(ctx, 'voice'))
+bot.on('audio', async (ctx: Context) =>
+    await sendReplyToUnknownMessage(ctx, 'music'))
+bot.on('photo', async (ctx: Context) =>
+    await sendReplyToUnknownMessage(ctx, 'photo'))
+bot.on('video', async (ctx: Context) =>
+    await sendReplyToUnknownMessage(ctx, 'video'))
+bot.on('message', async (ctx: Context) =>
+    await sendReplyToUnknownMessage(ctx, 'other'))
 
 mongoose.connect(config.MONGO_URL, config.MONGO_OPTIONS)
     .then(() => log.info(info.mongoConnected))

@@ -21,6 +21,7 @@ const MONGO_HOST = process.env.MONGO_HOST
 const VK_HANDLER_PORT = process.env.VK_HANDLER_PORT || 8081
 const VK_HANDLER_HOST = process.env.APP_HOST || '127.0.0.1'
 const VK_HANDLER_PROTOCOL = process.env.VK_HANDLER_PROTOCOL || 'http'
+const SECRETS = process.env.SECRETS
 
 const config = {
     APP_HOST,
@@ -30,7 +31,8 @@ const config = {
     MONGO_OPTIONS,
     VK_HANDLER_HOST,
     VK_HANDLER_PORT,
-    VK_HANDLER_PROTOCOL
+    VK_HANDLER_PROTOCOL,
+    SECRETS
 }
 
 export default config

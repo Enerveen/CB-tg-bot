@@ -1,5 +1,7 @@
 import stickers from "./stickers";
-import {TopLevelUnknownMessageReply} from "../types";
+import {messageType, TopLevelUnknownMessageReply} from "../types";
+import {getRandomElement} from "../utils";
+import config from "../config";
 
 export const messages = {
     alreadyRegistered: 'Wait, we already know each other, mate. Use the menu below to set up your subscriptions or just wait for the updates',
@@ -9,7 +11,6 @@ export const messages = {
     botUnpaused: 'Already missed your funny memes? Ok, now I will deliver them again',
     botPaused: 'Ah, wanna take a time to chill? Ok, no updates for you anymore',
     subsListFirstLine: `You are subscribed to the following pages:
-    
 `,
     setSubsRequest: `Provide the list of the pages ids that you want to subscribe using <b>exactly</b> the following format:
 <i>subscription1, subscription2, subscription3</i>`,
@@ -78,9 +79,95 @@ const topLevelUnknownMessageReplies:TopLevelUnknownMessageReply[]  = [
     }
 ]
 
+const topLevelMediaReplies: TopLevelUnknownMessageReply[] = [
+    {
+        sticker: stickers.cursedEyePain1
+    },
+    {
+        sticker: stickers.cursedEyePain2
+    },
+    {
+        message:'Probably one of the most disturbing things I\'ve ever seen...',
+        sticker: stickers.cursedStare
+    },
+    {
+        message: 'Do androids dream of electric sheep? Idk, now I just dream about being blind'
+    }
+]
+
+const topLevelPhotoReplies: TopLevelUnknownMessageReply[] = [
+    {
+        message: 'At least it is not a dick pic'
+    }
+]
+
+const topLevelVideoReplies: TopLevelUnknownMessageReply[] = [
+    {
+        message: 'At least it is your parents home video. Don\'t feel like I could watch it once again'
+    }
+]
+
+const topLevelSoundReplies: TopLevelUnknownMessageReply[] = [
+    {
+        message: 'I didn\'t heard anything worthy for a while! Still hope to hear something soon.'
+    },
+]
+
+const topLevelVoiceReplies: TopLevelUnknownMessageReply[] = [
+    {
+        sticker: stickers.listening3
+    },
+    {
+        message: 'Helen Keller once said: <i>"Blindness cuts us off from things, but deafness cuts us off from people"</i>. Now I\'m eager to become deaf'
+    },
+    {
+        message: `We hear only those questions for which we are in a position to find answers.
+                      <i> - Friedrich Nietzsche</i>`
+    },
+    {
+        message: 'Every day we should hear at least one little song, read one good poem, see one exquisite picture, and, if possible, not a single voice message.'
+    }
+]
+
+const topLevelMusicReplies: TopLevelUnknownMessageReply[] = [
+    {
+        sticker: stickers.listening1
+    },
+    {
+        sticker: stickers.listening2
+    },
+    {
+        message: 'Sounds even worse than AlbertJohnson\'s latest release'
+    },
+    {
+        message: 'Dude, that sounds just awful. Better go listen to <a href="https://open.spotify.com/album/5NRdV1gsrRKxk2kaR7RnDg?si=8CuIHKvJQvCiIs5J8uuH7g">Fice</a> to feel the art of music'
+    }
+]
+
+const replyToUnknownMessage = (messageType: messageType) => {
+    if (Math.floor(Math.random() * 1000) === 0) {
+        return getRandomElement(JSON.parse(config.SECRETS as string))
+    }
+
+    switch (messageType) {
+        case "music":
+            return getRandomElement([...topLevelSoundReplies, ...topLevelMusicReplies])
+        case "voice":
+            return getRandomElement([...topLevelSoundReplies, ...topLevelVoiceReplies])
+        case "photo":
+            return getRandomElement([...topLevelMediaReplies, ...topLevelPhotoReplies])
+        case "video":
+            return getRandomElement([...topLevelMediaReplies, ...topLevelVideoReplies])
+        case "text":
+            return getRandomElement(topLevelUnknownMessageReplies)
+        default:
+            return getRandomElement(topLevelUnknownMessageReplies)
+    }
+}
+
 export const getMessage = {
     welcome: (name: string) => `Ah, greetings ${name}! Great name for a dog, by the way! My name is <b><i>Pontissey</i></b>, I'm eager to know more about the meme pages you subscribed (not really), so go on and setup your subscriptions`,
     subsList: (acc: string, value: string) => acc + `<a href='https://vk.com/${value.trim()}'>${value.trim()}</a>
 `,
-    topLevelUnknownMessageReply: () => topLevelUnknownMessageReplies[Math.floor(Math.random() * topLevelUnknownMessageReplies.length)]
+    replyToUnknownMessage
 }
