@@ -23,7 +23,7 @@ const sendUpdateToUser =
         const {data: updates} =
             await runWithErrorHandler(() => api.get(`/posts`,
                 {domains: subscriptions.join(','), timestamp: lastRequestTimestamp})) || { data: [] }
-        if (updates) {
+        if (updates[0]) {
             for (const {text, content} of updates) {
                 const mediaContent = content.filter(({type}: {type: string}) => type === 'photo')
                 await runWithErrorHandler(async () => {
@@ -32,18 +32,18 @@ const sendUpdateToUser =
                     mediaContent.length && await bot.telegram.sendMediaGroup(tgId, mediaContent)
                 })
             }
+            User.findOneAndUpdate({tgId}, {lastRequestTimestamp: getCurrentSecondsTimestamp()},
+                (err:Error) => {
+                    if (err) {
+                        log.error(err.message, err)
+                    } else {
+                        log.info(info.getTimestampUpdate(tgId))
+                    }
+                })
         } else if (Math.floor(Math.random() * 100000) === 0) {
             const {message: secret} = getRandomElement(JSON.parse(config.SECRETS as string))
             await bot.telegram.sendMessage(tgId, secret)
         }
-        User.findOneAndUpdate({tgId}, {lastRequestTimestamp: getCurrentSecondsTimestamp()},
-            (err:Error) => {
-                if (err) {
-                    log.error(err.message, err)
-                } else {
-                    log.info(info.getTimestampUpdate(tgId))
-                }
-            })
     }
 
 
