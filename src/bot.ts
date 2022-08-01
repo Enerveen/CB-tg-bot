@@ -10,13 +10,12 @@ import {info} from "./messages/logging";
 import {handleTopLevelTextMessage, sendReplyToUnknownMessage} from "./controllers/textMessageHandlers";
 import {getRandomElement} from "./utils";
 import stickers from "./messages/stickers";
-import {TopLevelUnknownMessageReply} from "./types";
 
 const bot = new Telegraf<Scenes.WizardContext>(config.BOT_API_TOKEN)
 const scheduler = new ToadScheduler();
 
 const sendUpdatesTask = new AsyncTask(
-    'simple task',
+    'sendUpdatesTask',
     async ():Promise<void> => {
         log.info('Scheduled send job triggered')
         await sendUpdatesToUsers(bot)
@@ -25,7 +24,7 @@ const sendUpdatesTask = new AsyncTask(
 )
 
 const sendUpdatesJob = new SimpleIntervalJob(
-    { minutes: 1, runImmediately: false },
+    { minutes: 5, runImmediately: false },
     sendUpdatesTask,
     'id_1'
 );
