@@ -2,7 +2,7 @@ import {Scenes, Telegraf} from "telegraf";
 import User from "../mongo/model";
 import {VkReqUser} from "../types";
 import {Error} from "mongoose";
-import {api, getCurrentSecondsTimestamp, getRandomElement} from "../utils";
+import {api, getCurrentSecondsTimestamp, getRandomElement, waitFor} from "../utils";
 import IUser from "../mongo/interface";
 import log from "yuve-shared/build/logger/logger";
 import runWithErrorHandler from "yuve-shared/build/runWithErrorHandler/runWithErrorHandler";
@@ -49,8 +49,11 @@ const sendUpdateToUser =
 
 export const sendUpdatesToUsers = async (bot: Telegraf<Scenes.WizardContext>): Promise<void> => {
     const users = await getAllActiveUsers()
-    await users.forEach(async (user: VkReqUser) => {
-        await sendUpdateToUser(user, bot)
+    users.forEach(async (user: VkReqUser, index) => {
+        if (!(index % 3)) {
+            await waitFor(1000);
+        }
+        await sendUpdateToUser(user, bot);
     })
 }
 

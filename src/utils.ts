@@ -13,3 +13,5 @@ export const api = {
 export const getCurrentSecondsTimestamp = () => String(Date.now()).substring(0, 10)
 
 export const getRandomElement = (array: any[]) => array[Math.floor(Math.random() * array.length)]
+
+export const waitFor = (time: number) => new Promise(resolve => setTimeout(resolve, time))
