@@ -19,21 +19,36 @@ const getAllActiveUsers = (): Promise<IUser[]> =>
         )
 
 const sendUpdateToUser =
-    async ({tgId, subscriptions, lastRequestTimestamp}: VkReqUser, bot: Telegraf<Scenes.WizardContext>): Promise<void> => {
+    async ({
+               tgId,
+               subscriptions,
+               lastRequestTimestamp
+           }: VkReqUser, bot: Telegraf<Scenes.WizardContext>): Promise<void> => {
         const {data: updates} =
-            await runWithErrorHandler(() => api.get(`/posts`,
-                {domains: subscriptions.join(','), timestamp: lastRequestTimestamp})) || { data: [] }
+        await runWithErrorHandler(() => api.get(`/posts`,
+            {domains: subscriptions.join(','), timestamp: lastRequestTimestamp})) || {data: []}
         if (updates[0]) {
             for (const {text, content} of updates) {
-                const mediaContent = content.filter(({type}: {type: string}) => type === 'photo')
+                const imageContent = content.filter(({type}: { type: string }) => type === 'photo')
+                const nonImageContent = content.filter(({type}: { type: string }) => type !== 'photo')
                 await runWithErrorHandler(async () => {
                     text && await bot.telegram.sendMessage(tgId, text)
-                    // @ts-ignore
-                    mediaContent.length && await bot.telegram.sendMediaGroup(tgId, mediaContent)
                 })
+                await runWithErrorHandler(async () => {
+                    // @ts-ignore
+                    imageContent.length && await bot.telegram.sendMediaGroup(tgId, imageContent)
+                })
+                await nonImageContent.forEach(async ({media, type}: { media: string, type: string }) =>
+                    await runWithErrorHandler(async () => {
+                        await bot.telegram.sendMessage(
+                            tgId,
+                            `<a href='${media}'>${type.toUpperCase()}</a>`,
+                            {parse_mode: 'HTML'}
+                        )
+                    }))
             }
             User.findOneAndUpdate({tgId}, {lastRequestTimestamp: getCurrentSecondsTimestamp()},
-                (err:Error) => {
+                (err: Error) => {
                     if (err) {
                         log.error(err.message, err)
                     } else {

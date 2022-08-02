@@ -8,6 +8,11 @@ import {messageType} from "../types";
 
 export const handleTopLevelTextMessage = async (message: string, ctx: any, bot: Telegraf<Scenes.WizardContext>) => {
     switch (message) {
+        case 'ctxTest':
+            ctx.session.counter = ctx.session.counter || 0
+            ctx.session.counter++
+            await ctx.reply(`Message counter:${ctx.session.counter}`)
+            break;
         case mainKeyboardTexts.getSubs:
             await getUserSubscriptions(bot, ctx as Context)
             break;
