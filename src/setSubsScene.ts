@@ -25,7 +25,7 @@ const setSubsWizard = new Scenes.WizardScene(
         const messageText = ctx.message.text
         if (messageText) {
             //@ts-ignore
-            ctx.scene.state.subscriptions = messageText.split(',');
+            ctx.scene.state.subscriptions = messageText.split(',').map(value => value.trim());
             // @ts-ignore
             const { subscriptions } = ctx.scene.state
             const subsList = subscriptions.reduce(getMessage.subsList, messages.subsListFirstLine)
