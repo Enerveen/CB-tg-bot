@@ -5,7 +5,7 @@ import log from "yuve-shared/build/logger/logger";
 import {getMessage, messages} from "./messages/messages";
 import setSubsKeyboard, {cancelOnlyKeyboard} from "./keyboards/subsScene";
 import {setSubsKeyboardTexts} from "./messages/keyboards";
-import mainKeyboard from "./keyboards/main";
+import generateMainKeyboard from "./keyboards/main";
 
 const setSubsWizard = new Scenes.WizardScene(
     'setSubs',
@@ -17,7 +17,7 @@ const setSubsWizard = new Scenes.WizardScene(
 
         // @ts-ignore
         if (ctx.message.text === setSubsKeyboardTexts.cancel) {
-            await ctx.reply(messages.setSubsSceneLeft, mainKeyboard.reply())
+            await ctx.reply(messages.setSubsSceneLeft, (await generateMainKeyboard(ctx)).reply())
             return ctx.scene.leave()
         }
 
@@ -45,9 +45,9 @@ const setSubsWizard = new Scenes.WizardScene(
                     async (err:Error) => {
                         if (err) {
                             log.error(err.message)
-                            await ctx.reply(messages.defaultErrorReply, mainKeyboard.reply())
+                            await ctx.reply(messages.defaultErrorReply, (await generateMainKeyboard(ctx)).reply())
                         } else {
-                            await ctx.reply(messages.subsSetUp, mainKeyboard.reply())
+                            await ctx.reply(messages.subsSetUp, (await generateMainKeyboard(ctx)).reply())
                             return await ctx.scene.leave()
                         }
                     })
@@ -57,7 +57,7 @@ const setSubsWizard = new Scenes.WizardScene(
                 await ctx.replyWithHTML(messages.setSubsRequest, cancelOnlyKeyboard.reply())
                 return ctx.wizard.back()
             case setSubsKeyboardTexts.cancel:
-                await ctx.reply(messages.setSubsSceneLeft, mainKeyboard.reply())
+                await ctx.reply(messages.setSubsSceneLeft, (await generateMainKeyboard(ctx)).reply())
                 return ctx.scene.leave()
             default:
                 await ctx.reply(messages.setSubsUnexpectedMessage)

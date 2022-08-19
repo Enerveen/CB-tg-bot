@@ -1,5 +1,8 @@
 import axios from "axios";
 import config from "./config";
+import User from "./mongo/model";
+import log from "yuve-shared/build/logger/logger";
+import {logging} from "./messages/logging";
 
 export const api = {
     get: async (path: string, params?: object) => await axios({
@@ -15,3 +18,18 @@ export const getCurrentSecondsTimestamp = () => String(Date.now()).substring(0, 
 export const getRandomElement = (array: any[]) => array[Math.floor(Math.random() * array.length)]
 
 export const waitFor = (time: number) => new Promise(resolve => setTimeout(resolve, time))
+
+export const getUser = async (ctx: any) => {
+    if (ctx.session.user) {
+        return ctx.session.user
+    }
+    const user = await User.findOne({tgId: ctx.from?.id}, 'tgId tgUsername subscriptions paused banned')
+        .exec()
+        .catch((error) => {
+                log.error(logging.userFind, error)
+                return []
+            }
+        )
+    ctx.session.user = user
+    return user
+}

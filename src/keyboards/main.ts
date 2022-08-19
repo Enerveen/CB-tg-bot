@@ -1,16 +1,19 @@
 import {Keyboard} from "telegram-keyboard";
 import {mainKeyboardTexts} from "../messages/keyboards";
+import {getUser} from "../utils";
 
-const mainKeyboard = Keyboard.make(
-    [
+const generateMainKeyboard = async (ctx:any) => {
+    const user = await getUser(ctx)
+    return Keyboard.make([
         [
             mainKeyboardTexts.setSubs,
             mainKeyboardTexts.getSubs
         ],
         [
-           mainKeyboardTexts.pauseRestart,
-           mainKeyboardTexts.about,
+            user.paused ? mainKeyboardTexts.restart : mainKeyboardTexts.pause,
+            mainKeyboardTexts.about,
         ]
-    ]
-)
-export default mainKeyboard;
+    ])
+}
+
+export default generateMainKeyboard;

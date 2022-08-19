@@ -2,9 +2,9 @@ import {mainKeyboardTexts} from "../messages/keyboards";
 import getUserSubscriptions from "./getUserSubscriptions";
 import {Context, Scenes, Telegraf} from "telegraf";
 import {getMessage, messages} from "../messages/messages";
-import mainKeyboard from "../keyboards/main";
 import pauseOrRestartBot from "./pauseOrRestartBot";
 import {messageType} from "../types";
+import generateMainKeyboard from "../keyboards/main";
 
 export const handleTopLevelTextMessage = async (message: string, ctx: any, bot: Telegraf<Scenes.WizardContext>) => {
     switch (message) {
@@ -19,7 +19,13 @@ export const handleTopLevelTextMessage = async (message: string, ctx: any, bot: 
         case mainKeyboardTexts.setSubs:
             ctx.scene.enter('setSubs')
             break;
-        case mainKeyboardTexts.pauseRestart:
+        case mainKeyboardTexts.pause:
+            await pauseOrRestartBot(ctx)
+            break;
+        case mainKeyboardTexts.restart:
+            await pauseOrRestartBot(ctx)
+            break;
+        case mainKeyboardTexts.pauseRestart: //Button, removed before from keyboard
             await pauseOrRestartBot(ctx)
             break;
         case mainKeyboardTexts.about:
@@ -32,6 +38,6 @@ export const handleTopLevelTextMessage = async (message: string, ctx: any, bot: 
 
 export const sendReplyToUnknownMessage = async (ctx: Context, messageType: messageType) => {
     const {message, sticker} = getMessage.replyToUnknownMessage(messageType)
-    message && await ctx.replyWithHTML(message, mainKeyboard.reply())
-    sticker && await ctx.replyWithSticker(sticker, mainKeyboard.reply())
+    message && await ctx.replyWithHTML(message, (await generateMainKeyboard(ctx)).reply())
+    sticker && await ctx.replyWithSticker(sticker, (await generateMainKeyboard(ctx)).reply())
 }
