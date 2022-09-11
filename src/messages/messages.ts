@@ -10,7 +10,8 @@ export const messages = {
     setSubsSceneBack: 'One small step back for man, one giant leap back for mankind...',
     botUnpaused: 'Already missed your funny memes? Ok, now I will deliver them again',
     botPaused: 'Ah, wanna take a time to chill? Ok, no updates for you anymore',
-    subsListFirstLine: `You are subscribed to the following pages:
+    keyboardHidden: 'Well, keyboard will be hidden from now. Text me anything if you want it to be visible once again.',
+    subsListFirstLine: `You are subscribed to the following pages:,
 `,
     setSubsRequest: `Well, now I will need the list of the pages ids that you want to subscribe using <b>exactly</b> the following format:
 <i>subscription1, subscription2, subscription3</i>

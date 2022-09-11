@@ -8,11 +8,6 @@ import generateMainKeyboard from "../keyboards/main";
 
 export const handleTopLevelTextMessage = async (message: string, ctx: any, bot: Telegraf<Scenes.WizardContext>) => {
     switch (message) {
-        case 'ctxTest':
-            ctx.session.counter = ctx.session.counter || 0
-            ctx.session.counter++
-            await ctx.reply(`Message counter:${ctx.session.counter}`)
-            break;
         case mainKeyboardTexts.getSubs:
             await getUserSubscriptions(bot, ctx as Context)
             break;
@@ -29,7 +24,13 @@ export const handleTopLevelTextMessage = async (message: string, ctx: any, bot: 
             await pauseOrRestartBot(ctx)
             break;
         case mainKeyboardTexts.about:
-            await ctx.replyWithHTML(messages.about, {disable_web_page_preview: true})
+            await ctx.replyWithHTML(messages.about, {
+                disable_web_page_preview: true,
+                ...(await generateMainKeyboard(ctx)).reply()
+            })
+            break;
+        case mainKeyboardTexts.hide:
+            await ctx.replyWithHTML(messages.keyboardHidden, {reply_markup: { remove_keyboard: true }})
             break;
         default:
             await sendReplyToUnknownMessage(ctx, 'text')
