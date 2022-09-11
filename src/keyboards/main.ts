@@ -11,8 +11,10 @@ const generateMainKeyboard = async (ctx:any) => {
         ],
         [
             user.paused ? mainKeyboardTexts.restart : mainKeyboardTexts.pause,
-            mainKeyboardTexts.hide,
             mainKeyboardTexts.about,
+        ],
+        [
+            mainKeyboardTexts.hide
         ]
     ])
 }
