@@ -10,18 +10,29 @@ export const messages = {
     setSubsSceneBack: 'One small step back for man, one giant leap back for mankind...',
     botUnpaused: 'Already missed your funny memes? Ok, now I will deliver them again',
     botPaused: 'Ah, wanna take a time to chill? Ok, no updates for you anymore',
+    manageSubs: 'Wanna something new, I suppose. What exactly?',
+    backToMain: 'Ok, here is your main menu once again',
     keyboardHidden: 'Well, keyboard will be hidden from now. Text me anything if you want it to be visible once again.',
-    subsListFirstLine: `You are subscribed to the following pages:,
+    subsListFirstLine: `You are subscribed to the following pages:
+`,
+    deleteSubsListFirstLine: `You are about to remove the following pages from your subscriptions:
+`,
+    addSubsListFirstLine: `You are about to add the following pages to your subscriptions:
 `,
     setSubsRequest: `Well, now I will need the list of the pages ids that you want to subscribe using <b>exactly</b> the following format:
 <i>subscription1, subscription2, subscription3</i>
 
 <span class="tg-spoiler">Page id is that stuff after the vk address in the page url. For example, for the <i>https://vk.com/postmodernich</i> id will be <b><i>postmodernich</i></b></span>
 `,
+    deleteSubsRequest: `
+List the ones you want to delete using <b>exactly</b> the following format:
+<i>subscription1, subscription2, subscription3</i>
+`,
     subsVerifyLastLine: `
 
 <b>Is everything right?</b>`,
-    subsSetUp: 'Congrats! Your have just set up your subscriptions, it\'s a great step on your way to happiness!',
+    subsSetUp: 'Congrats! Your have just added some new subscriptions, it\'s a great step on your way to happiness!',
+    subsDeleted: 'Taking out the trash is a great thing to do! Now your subscriptions are much cleaner',
     setSubsUnexpectedMessage: 'It\'s not a big deal for me to ignore you until you will stop showing off and select on of the provided options',
     setSubsUnexpectedSubList: 'Don\'t try to fool me, it is definitely not a list of subscriptions',
     about: `Ah, you want to know me a bit closer?

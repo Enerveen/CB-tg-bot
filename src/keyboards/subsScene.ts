@@ -1,5 +1,13 @@
 import {Keyboard} from "telegram-keyboard";
-import {setSubsKeyboardTexts} from "../messages/keyboards"
+import {manageSubsKeyboardTexts, setSubsKeyboardTexts} from "../messages/keyboards"
+
+export const manageSubsKeyboard = Keyboard.make(
+    [
+        manageSubsKeyboardTexts.addSubs,
+        manageSubsKeyboardTexts.deleteSubs,
+        manageSubsKeyboardTexts.cancel
+    ]
+)
 
 const setSubsKeyboard = Keyboard.make(
     [

@@ -1,18 +1,28 @@
-import {mainKeyboardTexts} from "../messages/keyboards";
+import {mainKeyboardTexts, manageSubsKeyboardTexts} from "../messages/keyboards";
 import getUserSubscriptions from "./getUserSubscriptions";
 import {Context, Scenes, Telegraf} from "telegraf";
 import {getMessage, messages} from "../messages/messages";
 import pauseOrRestartBot from "./pauseOrRestartBot";
 import {messageType} from "../types";
 import generateMainKeyboard from "../keyboards/main";
+import {manageSubsKeyboard} from "../keyboards/subsScene";
 
 export const handleTopLevelTextMessage = async (message: string, ctx: any, bot: Telegraf<Scenes.WizardContext>) => {
     switch (message) {
         case mainKeyboardTexts.getSubs:
             await getUserSubscriptions(bot, ctx as Context)
             break;
-        case mainKeyboardTexts.setSubs:
-            ctx.scene.enter('setSubs')
+        case mainKeyboardTexts.manageSubs:
+            await ctx.replyWithHTML(messages.manageSubs, manageSubsKeyboard.reply())
+            break;
+        case manageSubsKeyboardTexts.addSubs:
+            ctx.scene.enter('addSubs')
+            break;
+        case manageSubsKeyboardTexts.deleteSubs:
+            ctx.scene.enter('deleteSubs')
+            break;
+        case manageSubsKeyboardTexts.cancel:
+            await ctx.replyWithHTML(messages.backToMain, (await generateMainKeyboard(ctx)).reply())
             break;
         case mainKeyboardTexts.pause:
             await pauseOrRestartBot(ctx)

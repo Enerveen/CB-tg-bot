@@ -6,7 +6,7 @@ const generateMainKeyboard = async (ctx:any) => {
     const user = await getUser(ctx)
     return Keyboard.make([
         [
-            mainKeyboardTexts.setSubs,
+            mainKeyboardTexts.manageSubs,
             mainKeyboardTexts.getSubs
         ],
         [

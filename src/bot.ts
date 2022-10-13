@@ -1,7 +1,7 @@
 import {Context, session, Scenes, Telegraf} from "telegraf";
 import config from "./config";
 import mongoose from "mongoose";
-import setSubsWizard from "./setSubsScene";
+import addSubsWizard from "./scenes/addSubsScene";
 import {AsyncTask, SimpleIntervalJob, ToadScheduler} from "toad-scheduler";
 import sendUpdatesToUsers from "./controllers/sendUpdatestoUsers";
 import createUser from "./controllers/createUser";
@@ -10,6 +10,7 @@ import {info} from "./messages/logging";
 import {handleTopLevelTextMessage, sendReplyToUnknownMessage} from "./controllers/textMessageHandlers";
 import {getRandomElement} from "./utils";
 import stickers from "./messages/stickers";
+import deleteSubsWizard from "./scenes/deleteSubsScene";
 
 const bot = new Telegraf<Scenes.WizardContext>(config.BOT_API_TOKEN)
 const scheduler = new ToadScheduler();
@@ -31,7 +32,7 @@ const sendUpdatesJob = new SimpleIntervalJob(
 
 
 // @ts-ignore
-const stage = new Scenes.Stage<Scenes.WizardContext>([setSubsWizard])
+const stage = new Scenes.Stage<Scenes.WizardContext>([addSubsWizard, deleteSubsWizard])
 
 bot.use(session())
 bot.use(stage.middleware())
