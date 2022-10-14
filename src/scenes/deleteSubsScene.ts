@@ -9,7 +9,6 @@ import generateMainKeyboard from "../keyboards/main";
 import runWithErrorHandler from "yuve-shared/build/runWithErrorHandler/runWithErrorHandler";
 
 // @ts-ignore
-// @ts-ignore
 const deleteSubsWizard = new Scenes.WizardScene(
     'deleteSubs',
     async (ctx) => {
@@ -62,9 +61,16 @@ const deleteSubsWizard = new Scenes.WizardScene(
                 // @ts-ignore
                 const subsToDelete = ctx.scene.state.subscriptions
                 if (user) {
+                    const filteredSubsToAdd:string[] = []
+                    const alreadyIncludedSubs:string[] = []
+                    subsToDelete.forEach((sub: string) =>
+                        user.subscriptions.includes(sub) ? alreadyIncludedSubs.push(sub) : filteredSubsToAdd.push(sub))
                     user.subscriptions = user.subscriptions.filter((sub: string) => !subsToDelete.includes(sub))
                     await runWithErrorHandler(user.save() as unknown as () => Promise<any>)
-                    await ctx.replyWithHTML(messages.subsDeleted, (await generateMainKeyboard(ctx)).reply())
+                    await ctx.replyWithHTML(
+                        getMessage.subsManagementVerification(alreadyIncludedSubs, filteredSubsToAdd, 'delete'),
+                        {disable_web_page_preview: true,...(await generateMainKeyboard(ctx)).reply()}
+                    )
                     return await ctx.scene.leave()
                 }
                 break;
@@ -75,7 +81,6 @@ const deleteSubsWizard = new Scenes.WizardScene(
                 ctx.scene.state.user = user
                 await ctx.replyWithHTML(subsList + messages.deleteSubsRequest,
                     {disable_web_page_preview: true, ...cancelOnlyKeyboard.reply()})
-                return ctx.wizard.next()
                 return ctx.wizard.back()
             case setSubsKeyboardTexts.cancel:
                 await ctx.reply(messages.setSubsSceneLeft, (await generateMainKeyboard(ctx)).reply())

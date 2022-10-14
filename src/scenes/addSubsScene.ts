@@ -50,15 +50,19 @@ const addSubsWizard = new Scenes.WizardScene(
                         }
                     }).clone()
                 // @ts-ignore
-                log.info('user', ctx.from?.id)
-                // @ts-ignore
                 const subsToAdd = ctx.scene.state.subscriptions
                 if (user) {
-                    user.subscriptions = user.subscriptions.concat(
-                        subsToAdd.filter((sub: string) => !user?.subscriptions.includes(sub))
-                    )
+                    const filteredSubsToAdd:string[] = []
+                    const alreadyIncludedSubs:string[] = []
+                    subsToAdd.forEach((sub: string) =>
+                        user.subscriptions.includes(sub) ? alreadyIncludedSubs.push(sub) : filteredSubsToAdd.push(sub))
+                    user.subscriptions = user.subscriptions.concat(filteredSubsToAdd)
+
                     await runWithErrorHandler(user.save() as unknown as () => Promise<any>)
-                    await ctx.replyWithHTML(messages.subsSetUp, (await generateMainKeyboard(ctx)).reply())
+                    await ctx.replyWithHTML(
+                        getMessage.subsManagementVerification(filteredSubsToAdd, alreadyIncludedSubs, 'add'),
+                        {disable_web_page_preview: true,...(await generateMainKeyboard(ctx)).reply()}
+                    )
                     return await ctx.scene.leave()
                 }
             break;

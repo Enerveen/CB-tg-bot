@@ -30,7 +30,7 @@ List the ones you want to delete using <b>exactly</b> the following format:
 `,
     subsVerifyLastLine: `
 
-<b>Is everything right?</b>`,
+<b>Is this ok?</b>`,
     subsSetUp: 'Congrats! Your have just added some new subscriptions, it\'s a great step on your way to happiness!',
     subsDeleted: 'Taking out the trash is a great thing to do! Now your subscriptions are much cleaner',
     setSubsUnexpectedMessage: 'It\'s not a big deal for me to ignore you until you will stop showing off and select on of the provided options',
@@ -182,9 +182,17 @@ const replyToUnknownMessage = (messageType: messageType) => {
     }
 }
 
+const subsManagementVerification = (succeedArray: string[], failedArray: string[], processName: 'add' | 'delete' ) => {
+    const successMessage = `These pages were ${processName === 'add' ? 'added to your' : 'removed from your'} subscriptions list:\n`
+    const failedMessage = processName === 'add' ? 'The following were not added as they are already in here:\n' : 'The following were not removed from your subscriptions as they are not in here:\n'
+    return `${succeedArray.length ? succeedArray.reduce(getMessage.subsList, successMessage) : ''}
+${failedArray.length ? failedArray.reduce(getMessage.subsList, failedMessage) : ''}`
+}
+
 export const getMessage = {
     welcome: (name: string) => `Ah, greetings ${name}! Great name for a dog, by the way! My name is <b><i>Pontissey</i></b>, I'm eager to know more about the meme pages you subscribed (not really), so go on and setup your subscriptions`,
     subsList: (acc: string, value: string) => acc + `<a href='https://vk.com/${value.trim()}'>${value.trim()}</a>
 `,
-    replyToUnknownMessage
+    replyToUnknownMessage,
+    subsManagementVerification
 }
