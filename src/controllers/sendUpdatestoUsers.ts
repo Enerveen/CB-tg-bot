@@ -72,4 +72,9 @@ export const sendUpdatesToUsers = async (bot: Telegraf<Scenes.WizardContext>): P
     })
 }
 
+export const sendMessageToUsers = async (ctx: any) => {
+    const users = await getAllActiveUsers()
+    users.forEach(async (user) => await ctx.copyMessage(user.tgId))
+}
+
 export default sendUpdatesToUsers

@@ -4,6 +4,8 @@ import {getRandomElement} from "../utils";
 import config, {constants} from "../config";
 
 export const messages = {
+    sendNotification: 'Type notification below',
+    sendNotification403: 'Nice try, but you are not cool enough to use this',
     alreadyRegistered: 'Wait, we already know each other, mate. Use the menu below to set up your subscriptions or just wait for the updates',
     defaultErrorReply: 'Oops... Something went wrong. Try again, it helps sometimes...',
     setSubsSceneLeft: 'Subscriptions setup canceled, hope you are satisfied with what you\'ve done',

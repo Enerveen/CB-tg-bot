@@ -5,7 +5,8 @@ export const mainKeyboardTexts = {
     restart: '🆙️ Restart bot',
     pauseRestart: '⏯️ Pause/restart bot', // deprecated
     about: 'ℹ️ About',
-    hide: '⏬ Hide keyboard ⏬'
+    hide: '⏬ Hide keyboard ⏬',
+    notify: 'notify'
 }
 
 export const manageSubsKeyboardTexts = {

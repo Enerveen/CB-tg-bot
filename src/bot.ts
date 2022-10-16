@@ -11,6 +11,7 @@ import {handleTopLevelTextMessage, sendReplyToUnknownMessage} from "./controller
 import {getRandomElement} from "./utils";
 import stickers from "./messages/stickers";
 import deleteSubsWizard from "./scenes/deleteSubsScene";
+import notifyUsersWizard from "./scenes/notifyUsersScene";
 
 const bot = new Telegraf<Scenes.WizardContext>(config.BOT_API_TOKEN)
 const scheduler = new ToadScheduler();
@@ -32,7 +33,7 @@ const sendUpdatesJob = new SimpleIntervalJob(
 
 
 // @ts-ignore
-const stage = new Scenes.Stage<Scenes.WizardContext>([addSubsWizard, deleteSubsWizard])
+const stage = new Scenes.Stage<Scenes.WizardContext>([addSubsWizard, deleteSubsWizard, notifyUsersWizard])
 
 bot.use(session())
 bot.use(stage.middleware())

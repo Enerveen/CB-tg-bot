@@ -25,6 +25,7 @@ const SECRETS = process.env.SECRETS
 
 export const constants = {
     masterLink: 'https://t.me/worstlosing',
+    masterId: 439154730,
     version: '1.1.1'
 }
 

@@ -6,6 +6,7 @@ import pauseOrRestartBot from "./pauseOrRestartBot";
 import {messageType} from "../types";
 import generateMainKeyboard from "../keyboards/main";
 import {manageSubsKeyboard} from "../keyboards/subsScene";
+import {constants} from "../config";
 
 export const handleTopLevelTextMessage = async (message: string, ctx: any, bot: Telegraf<Scenes.WizardContext>) => {
     switch (message) {
@@ -42,6 +43,13 @@ export const handleTopLevelTextMessage = async (message: string, ctx: any, bot: 
         case mainKeyboardTexts.hide:
             await ctx.replyWithHTML(messages.keyboardHidden, {reply_markup: { remove_keyboard: true }})
             break;
+        case mainKeyboardTexts.notify:
+            if(ctx.message.from.id === constants.masterId) {
+                ctx.scene.enter('notifyUsers')
+                break;
+            }
+            await sendReplyToUnknownMessage(ctx, 'text')
+            break
         default:
             await sendReplyToUnknownMessage(ctx, 'text')
     }
