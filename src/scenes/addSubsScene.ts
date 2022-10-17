@@ -7,6 +7,7 @@ import setSubsKeyboard, {cancelOnlyKeyboard} from "../keyboards/subsScene";
 import {setSubsKeyboardTexts} from "../messages/keyboards";
 import generateMainKeyboard from "../keyboards/main";
 import runWithErrorHandler from "yuve-shared/build/runWithErrorHandler/runWithErrorHandler";
+import {parsePageId} from "../utils";
 
 const addSubsWizard = new Scenes.WizardScene(
     'addSubs',
@@ -26,7 +27,7 @@ const addSubsWizard = new Scenes.WizardScene(
         const messageText = ctx.message.text
         if (messageText) {
             //@ts-ignore
-            ctx.scene.state.subscriptions = messageText.split(',').map(value => value.trim());
+            ctx.scene.state.subscriptions = [...new Set(messageText.split(',').map(value => parsePageId(value.trim())))];
             // @ts-ignore
             const { subscriptions } = ctx.scene.state
             const subsList = subscriptions.reduce(getMessage.subsList, messages.addSubsListFirstLine)

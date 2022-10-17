@@ -21,7 +21,7 @@ export const messages = {
 `,
     addSubsListFirstLine: `You are about to add the following pages to your subscriptions:
 `,
-    setSubsRequest: `Well, now I will need the list of the pages ids that you want to subscribe using <b>exactly</b> the following format:
+    setSubsRequest: `Well, now I will need the list of the pages links or ids that you want to subscribe using <b>exactly</b> the following format:
 <i>subscription1, subscription2, subscription3</i>
 
 <span class="tg-spoiler">Page id is that stuff after the vk address in the page url. For example, for the <i>https://vk.com/postmodernich</i> id will be <b><i>postmodernich</i></b></span>

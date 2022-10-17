@@ -33,3 +33,22 @@ export const getUser = async (ctx: any) => {
     ctx.session.user = user
     return user
 }
+
+export const parsePageId = (link: string) => {
+    const possibleUrlStarts = [
+        'https://vk.com/',
+        'https://www.vk.com/',
+        'www.vk.com/',
+        'https://m.vk.com/',
+        'https://www.m.vk.com/',
+        'www.m.vk.com/',
+        'm.vk.com/',
+        'vk.com/'
+    ]
+    for (const start of possibleUrlStarts) {
+        if(link.startsWith(start)) {
+            return link.slice(start.length)
+        }
+    }
+    return link
+}
