@@ -192,8 +192,10 @@ ${failedArray.length ? failedArray.reduce(getMessage.subsList, failedMessage) : 
 }
 
 export const getMessage = {
-    welcome: (name: string) => `Ah, greetings ${name}! Great name for a dog, by the way! My name is <b><i>Pontissey</i></b>, I'm eager to know more about the meme pages you subscribed (not really), so go on and setup your subscriptions`,
-    subsList: (acc: string, value: string) => acc + `<a href='https://vk.com/${value.trim()}'>${value.trim()}</a>
+    welcome: (name: string) =>
+        `Ah, greetings ${name}! Great name for a dog, by the way! My name is <b><i>Pontissey</i></b>, I'm eager to know more about the meme pages you subscribed (not really), so go on and setup your subscriptions`,
+    subsList: (acc: string, value: string) =>
+        acc + `<a href='https://vk.com/${value.trim()}'>${value.trim()}</a>
 `,
     replyToUnknownMessage,
     subsManagementVerification
