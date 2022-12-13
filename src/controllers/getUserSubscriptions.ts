@@ -6,7 +6,7 @@ import {logging} from "../messages/logging";
 import generateMainKeyboard from "../keyboards/main";
 
 const getUserSubscriptions = async (bot: Telegraf<Scenes.WizardContext>, ctx: Context) => {
-    const user = await User.findOne({tgId: String(ctx.from?.id)}, 'subscriptions')
+    const user = await User.findOne({tgId: String(ctx.from?.id)}, 'subscriptions paused banned personalApiKey')
         .catch(async (error): Promise<void> => {
             log.error(logging.userFind, error)
             await ctx.reply(messages.defaultErrorReply)
@@ -14,7 +14,7 @@ const getUserSubscriptions = async (bot: Telegraf<Scenes.WizardContext>, ctx: Co
     if (user) {
         const {subscriptions} = user || {subscriptions: []}
         const subsList = subscriptions.reduce(getMessage.subsList, messages.subsListFirstLine)
-        await ctx.replyWithHTML(subsList, {
+        await ctx.replyWithHTML(subsList + getMessage.getUserInfo(user), {
             disable_web_page_preview: true,
             ...(await generateMainKeyboard(ctx)).reply()
         })

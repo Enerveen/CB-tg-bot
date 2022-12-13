@@ -12,6 +12,7 @@ import {getRandomElement} from "./utils";
 import stickers from "./messages/stickers";
 import deleteSubsWizard from "./scenes/deleteSubsScene";
 import notifyUsersWizard from "./scenes/notifyUsersScene";
+import setKeyScene from "./scenes/setKeyScene";
 
 const bot = new Telegraf<Scenes.WizardContext>(config.BOT_API_TOKEN)
 const scheduler = new ToadScheduler();
@@ -33,7 +34,7 @@ const sendUpdatesJob = new SimpleIntervalJob(
 
 
 // @ts-ignore
-const stage = new Scenes.Stage<Scenes.WizardContext>([addSubsWizard, deleteSubsWizard, notifyUsersWizard])
+const stage = new Scenes.Stage<Scenes.WizardContext>([addSubsWizard, deleteSubsWizard, notifyUsersWizard, setKeyScene])
 
 bot.use(session())
 bot.use(stage.middleware())

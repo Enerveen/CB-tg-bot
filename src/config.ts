@@ -26,7 +26,8 @@ const SECRETS = process.env.SECRETS
 export const constants = {
     masterLink: 'https://t.me/worstlosing',
     masterId: 439154730,
-    version: '0.2.0'
+    version: '0.3.0',
+    apiKeyTestPageId: 'yandex'
 }
 
 const config = {

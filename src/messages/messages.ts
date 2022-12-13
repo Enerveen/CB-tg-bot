@@ -2,6 +2,7 @@ import stickers from "./stickers";
 import {messageType, TopLevelUnknownMessageReply} from "../types";
 import {getRandomElement} from "../utils";
 import config, {constants} from "../config";
+import IUser from "../mongo/interface";
 
 export const messages = {
     sendNotification: 'Type notification below',
@@ -14,6 +15,9 @@ export const messages = {
     botPaused: 'Ah, wanna take a time to chill? Ok, no updates for you anymore',
     manageSubs: 'Wanna something new, I suppose. What exactly?',
     backToMain: 'Ok, here is your main menu once again',
+    setKeyRequest: 'No problem, send me your VK API key',
+    setKeyWrongKey: 'That looks like shit and not an API key for sure, try again',
+    setKeyInvalidKey: 'Nah, that key doesn\'t work, so it will not be applied',
     keyboardHidden: 'Well, keyboard will be hidden from now. Text me anything if you want it to be visible once again.',
     subsListFirstLine: `You are subscribed to the following pages:
 `,
@@ -191,12 +195,23 @@ const subsManagementVerification = (succeedArray: string[], failedArray: string[
 ${failedArray.length ? failedArray.reduce(getMessage.subsList, failedMessage) : ''}`
 }
 
+const getUserInfo = (user: IUser) => `
+${user.personalApiKey ? `Your personal API key is: ${user.personalApiKey}` : 'You have not setup personal API key yet'}
+Currently I'm ${user.paused ? 'paused. If you want to receive posts click "Restart bot" button below' : 'not paused'}
+${user.banned ? 'Unfortunately, you are banned. That means that recently your behavior were really bad, the only thing you can do to help this situation is to write "Excuse me" 100 times in a row.' : 'You are not banned'}
+`
+
 export const getMessage = {
     welcome: (name: string) =>
         `Ah, greetings ${name}! Great name for a dog, by the way! My name is <b><i>Pontissey</i></b>, I'm eager to know more about the meme pages you subscribed (not really), so go on and setup your subscriptions`,
     subsList: (acc: string, value: string) =>
         acc + `<a href='https://vk.com/${value.trim()}'>${value.trim()}</a>
 `,
+    setKeySuccess: (key: string) => key ?
+        `Wow! You've came to setup your own API key. It is <i><b>${key}</b></i>. Now you are able to subscribe the private pages` :
+        'Personal API key has been reset, no more private pages for you'
+    ,
     replyToUnknownMessage,
-    subsManagementVerification
+    subsManagementVerification,
+    getUserInfo
 }

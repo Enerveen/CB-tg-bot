@@ -58,6 +58,7 @@ const addSubsWizard = new Scenes.WizardScene(
                     subsToAdd.forEach((sub: string) =>
                         user.subscriptions.includes(sub) ? alreadyIncludedSubs.push(sub) : filteredSubsToAdd.push(sub))
                     user.subscriptions = user.subscriptions.concat(filteredSubsToAdd)
+                    user.paused = false
 
                     await runWithErrorHandler(user.save() as unknown as () => Promise<any>)
                     await ctx.replyWithHTML(

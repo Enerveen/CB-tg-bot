@@ -1,12 +1,13 @@
 export const mainKeyboardTexts = {
-    getSubs: '📰 View subscriptions',
+    getSubs: '📰 View profile',
     manageSubs: '📩 Manage subscriptions',
     pause: '⏸ Pause bot',
     restart: '🆙️ Restart bot',
     pauseRestart: '⏯️ Pause/restart bot', // deprecated
     about: 'ℹ️ About',
+    setKey: '🔑 Setup API key',
     hide: '⏬ Hide keyboard ⏬',
-    notify: 'notify'
+    notify: 'notify' // service option, always hidden
 }
 
 export const manageSubsKeyboardTexts = {
@@ -19,6 +20,11 @@ export const setSubsKeyboardTexts = {
     positive: '✅ Yep',
     negative: '🐶 No.',
     cancel: '❌ Cancel setup'
+}
+
+export const setKeyKeyboardTexts = {
+    reset: '🔄 Reset key',
+    cancel: '❌ Cancel key setup'
 }
 
 

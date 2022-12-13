@@ -6,6 +6,7 @@ export default interface IUser extends Document {
     subscriptions: string[],
     paused: boolean,
     banned: boolean,
-    lastRequestTimestamp: string
+    lastRequestTimestamp: string,
+    personalApiKey?: string
 }
 

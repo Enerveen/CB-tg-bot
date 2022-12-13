@@ -10,7 +10,8 @@ const UserSchema: Schema = new Schema(
         subscriptions: { type: Array, required: true, default: [] },
         paused: { type: Boolean, required: true, default: true },
         banned: { type: Boolean, required: true, default: false },
-        lastRequestTimestamp: { type: String, required: true }
+        lastRequestTimestamp: { type: String, required: true },
+        personalApiKey: { type: String, required: false }
     },
     {
         timestamps: true

@@ -1,7 +1,8 @@
 export interface VkReqUser {
     tgId: string,
-    subscriptions: string[]
+    subscriptions: string[],
     lastRequestTimestamp: string
+    personalApiKey?: string
 }
 
 export interface TopLevelUnknownMessageReply {

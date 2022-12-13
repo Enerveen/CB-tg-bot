@@ -34,6 +34,9 @@ export const handleTopLevelTextMessage = async (message: string, ctx: any, bot: 
         case mainKeyboardTexts.pauseRestart: //Button, removed before from keyboard
             await pauseOrRestartBot(ctx)
             break;
+        case mainKeyboardTexts.setKey:
+            ctx.scene.enter('setKey')
+            break;
         case mainKeyboardTexts.about:
             await ctx.replyWithHTML(messages.about, {
                 disable_web_page_preview: true,
@@ -43,7 +46,7 @@ export const handleTopLevelTextMessage = async (message: string, ctx: any, bot: 
         case mainKeyboardTexts.hide:
             await ctx.replyWithHTML(messages.keyboardHidden, {reply_markup: { remove_keyboard: true }})
             break;
-        case mainKeyboardTexts.notify:
+        case mainKeyboardTexts.notify: // Service option, always hidden
             if(ctx.message.from.id === constants.masterId) {
                 ctx.scene.enter('notifyUsers')
                 break;

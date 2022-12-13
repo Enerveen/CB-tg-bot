@@ -10,7 +10,7 @@ import {logging, info} from "../messages/logging";
 import config from "../config";
 
 const getAllActiveUsers = (): Promise<IUser[]> =>
-    User.find({paused: false, banned: false}, 'tgId subscriptions lastRequestTimestamp')
+    User.find({paused: false, banned: false}, 'tgId subscriptions lastRequestTimestamp personalApiKey')
         .exec()
         .catch((error) => {
                 log.error(logging.userFind, error)
@@ -18,15 +18,16 @@ const getAllActiveUsers = (): Promise<IUser[]> =>
             }
         )
 
-const sendUpdateToUser =
+export const sendUpdateToUser =
     async ({
                tgId,
                subscriptions,
-               lastRequestTimestamp
+               lastRequestTimestamp,
+               personalApiKey
            }: VkReqUser, bot: Telegraf<Scenes.WizardContext>): Promise<void> => {
         const {data: updates} =
         await runWithErrorHandler(() => api.get(`/posts`,
-            {domains: subscriptions.join(','), timestamp: lastRequestTimestamp})) || {data: []}
+            {domains: subscriptions.join(','), timestamp: lastRequestTimestamp, apiKey: personalApiKey})) || {data: []}
         if (updates[0]) {
             for (const {text, content} of updates) {
                 const imageContent = content.filter(({type}: { type: string }) => type === 'photo')
