@@ -11,3 +11,9 @@ export interface TopLevelUnknownMessageReply {
 }
 
 export type messageType = 'text' | 'voice' | 'music' | 'photo' | 'video' | 'other'
+
+export type vkRequestParams = {
+    domains: string,
+    timestamp: string,
+    apiKey?: string
+}

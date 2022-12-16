@@ -1,6 +1,6 @@
 import {Scenes, Telegraf} from "telegraf";
 import User from "../mongo/model";
-import {VkReqUser} from "../types";
+import {vkRequestParams, VkReqUser} from "../types";
 import {Error} from "mongoose";
 import {api, getCurrentSecondsTimestamp, getRandomElement, waitFor} from "../utils";
 import IUser from "../mongo/interface";
@@ -25,9 +25,12 @@ export const sendUpdateToUser =
                lastRequestTimestamp,
                personalApiKey
            }: VkReqUser, bot: Telegraf<Scenes.WizardContext>): Promise<void> => {
+        const params:vkRequestParams = {domains: subscriptions.join(','), timestamp: lastRequestTimestamp}
+        if (personalApiKey) {
+            params.apiKey = personalApiKey
+        }
         const {data: updates} =
-        await runWithErrorHandler(() => api.get(`/posts`,
-            {domains: subscriptions.join(','), timestamp: lastRequestTimestamp, apiKey: personalApiKey})) || {data: []}
+        await runWithErrorHandler(() => api.get(`/posts`, params)) || {data: []}
         if (updates[0]) {
             for (const {text, content} of updates) {
                 const imageContent = content.filter(({type}: { type: string }) => type === 'photo')
