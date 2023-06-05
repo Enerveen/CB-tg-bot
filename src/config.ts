@@ -12,7 +12,7 @@ const MONGO_OPTIONS = {
     retryWrites: false
 };
 
-const APP_PORT = process.env.APP_PORT || '8080'
+const APP_PORT = Number(process.env.APP_PORT) || 8443
 const APP_HOST = process.env.APP_HOST || 'localhost'
 const BOT_API_TOKEN = process.env.BOT_API_TOKEN || ''
 const MONGO_USERNAME = process.env.MONGO_USERNAME
