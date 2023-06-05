@@ -61,7 +61,7 @@ mongoose.connect(config.MONGO_URL, config.MONGO_OPTIONS)
 
 bot.launch({
     webhook: {
-        domain: config.APP_HOST,
+        domain: config.ENDPOINT_HOST,
         port: config.APP_PORT
     }
 })

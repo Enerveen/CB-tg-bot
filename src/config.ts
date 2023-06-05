@@ -14,6 +14,7 @@ const MONGO_OPTIONS = {
 
 const APP_PORT = Number(process.env.APP_PORT) || 8443
 const APP_HOST = process.env.APP_HOST || 'localhost'
+const ENDPOINT_HOST = process.env.ENDPOINT_HOST || 'localhost'
 const BOT_API_TOKEN = process.env.BOT_API_TOKEN || ''
 const MONGO_USERNAME = process.env.MONGO_USERNAME
 const MONGO_PASSWORD = process.env.MONGO_PASSWORD
@@ -33,6 +34,7 @@ export const constants = {
 const config = {
     APP_HOST,
     APP_PORT,
+    ENDPOINT_HOST,
     BOT_API_TOKEN,
     MONGO_URL:`mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}`,
     MONGO_OPTIONS,
