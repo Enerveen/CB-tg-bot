@@ -59,12 +59,7 @@ mongoose.connect(config.MONGO_URL, config.MONGO_OPTIONS)
     .then(() => log.info(info.mongoConnected))
     .catch((error) => log.error(error.message, error));
 
-bot.launch({
-    webhook: {
-        domain: config.ENDPOINT_HOST,
-        port: config.APP_PORT
-    }
-})
+bot.launch()
     .then(() => log.info(info.botStarted))
     .then(async () => await sendUpdatesToUsers(bot))
     .then(() => scheduler.addSimpleIntervalJob(sendUpdatesJob))
