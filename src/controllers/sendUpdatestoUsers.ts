@@ -2,12 +2,11 @@ import {Scenes, Telegraf} from "telegraf";
 import User from "../mongo/model";
 import {vkRequestParams, VkReqUser} from "../types";
 import {Error} from "mongoose";
-import {api, getCurrentSecondsTimestamp, getRandomElement, waitFor} from "../utils";
+import {api, getCurrentSecondsTimestamp, waitFor} from "../utils";
 import IUser from "../mongo/interface";
 import log from "yuve-shared/build/logger/logger";
 import runWithErrorHandler from "yuve-shared/build/runWithErrorHandler/runWithErrorHandler";
 import {logging, info} from "../messages/logging";
-import config from "../config";
 
 const getAllActiveUsers = (): Promise<IUser[]> =>
     User.find({paused: false, banned: false}, 'tgId subscriptions lastRequestTimestamp personalApiKey')
@@ -59,9 +58,6 @@ export const sendUpdateToUser =
                         log.info(info.getTimestampUpdate(tgId))
                     }
                 })
-        } else if (Math.floor(Math.random() * 100000) === 0) {
-            const {message: secret} = getRandomElement(JSON.parse(config.SECRETS as string))
-            await bot.telegram.sendMessage(tgId, secret)
         }
     }
 
