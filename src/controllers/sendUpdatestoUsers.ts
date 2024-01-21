@@ -2,11 +2,18 @@ import {Scenes, Telegraf} from "telegraf";
 import User from "../mongo/model";
 import {vkRequestParams, VkReqUser} from "../types";
 import {Error} from "mongoose";
-import {api, getCurrentSecondsTimestamp, waitFor} from "../utils";
+import {api, getCurrentSecondsTimestamp, pauseUserSubscription, waitFor} from "../utils";
 import IUser from "../mongo/interface";
 import log from "yuve-shared/build/logger/logger";
 import runWithErrorHandler from "yuve-shared/build/runWithErrorHandler/runWithErrorHandler";
 import {logging, info} from "../messages/logging";
+
+const BLOCKED_ERROR_MESSAGE = '403: Forbidden: failed to send message #1 with the error message "Bot was blocked by the user"'
+const pauseUserThatBlockedBot = (error: Error, id: string) => {
+    if (error.message === BLOCKED_ERROR_MESSAGE) {
+        pauseUserSubscription(id)
+    }
+}
 
 const getAllActiveUsers = (): Promise<IUser[]> =>
     User.find({paused: false, banned: false}, 'tgId subscriptions lastRequestTimestamp personalApiKey')
@@ -36,11 +43,11 @@ export const sendUpdateToUser =
                 const nonImageContent = content.filter(({type}: { type: string }) => type !== 'photo')
                 await runWithErrorHandler(async () => {
                     text && await bot.telegram.sendMessage(tgId, text)
-                })
+                }, (error) => pauseUserThatBlockedBot(error, tgId))
                 await runWithErrorHandler(async () => {
                     // @ts-ignore
                     imageContent.length && await bot.telegram.sendMediaGroup(tgId, imageContent)
-                })
+                }, (error) => pauseUserThatBlockedBot(error, tgId))
                 await nonImageContent.forEach(async ({media, type}: { media: string, type: string }) =>
                     await runWithErrorHandler(async () => {
                         await bot.telegram.sendMessage(
@@ -48,7 +55,7 @@ export const sendUpdateToUser =
                             `<a href='${media}'>${type.toUpperCase()}</a>`,
                             {parse_mode: 'HTML'}
                         )
-                    }))
+                    },(error) => pauseUserThatBlockedBot(error, tgId)))
             }
             User.findOneAndUpdate({tgId}, {lastRequestTimestamp: getCurrentSecondsTimestamp()},
                 (err: Error) => {

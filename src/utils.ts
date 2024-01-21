@@ -3,6 +3,7 @@ import config from "./config";
 import User from "./mongo/model";
 import log from "yuve-shared/build/logger/logger";
 import {logging} from "./messages/logging";
+import runWithErrorHandler from "yuve-shared/build/runWithErrorHandler/runWithErrorHandler";
 
 export const api = {
     get: async (path: string, params?: object) => await axios({
@@ -34,6 +35,19 @@ export const getUser = async (ctx: any) => {
     return user
 }
 
+export const pauseUserSubscription = async (tgId: string) => {
+    await runWithErrorHandler(async () =>
+        await User.findOneAndUpdate({tgId}, [
+                {
+                    $set: {
+                        paused: true,
+                        lastRequestTimestamp: getCurrentSecondsTimestamp()
+                    }
+                }
+            ]
+        )
+    )
+}
 export const parsePageId = (link: string) => {
     const possibleUrlStarts = [
         'https://vk.com/',
